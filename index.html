@@ -4,76 +4,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seesaw Simulation</title>
+    <title>Seesaw Sim</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <div class="container">
-        <!-- header section -->
-        <header>
-            <h1>🎢 Seesaw Simulation</h1>
-        </header>
-
-        <!-- Torques Boxes section -->
-        <div class="torques-box">
-            <div class="torque-item">
-                <span class="torque-label">Left Total Weight</span>
-                <span id="left-torque" class="torque-value">110 KG</span>
+    <div class="app-container">
+        <!-- sol taraf - agirlik loglari buraya -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Weight Log</h2>
             </div>
-            <div class="torque-item">
-                <span class="torque-label">Next Weight</span>
-                <span id="net-torque" class="torque-value">10 KG</span>
-            </div>
-            <div class="torque-item">
-                <span class="torque-label">Right Total Weight</span>
-                <span id="right-torque" class="torque-value">90 KG</span>
-            </div>
-        </div>
-        <div class="angle-box">
-            <span>Angle: </span>
-            <span id="angle-value">0°</span>
-        </div>
-        <!-- Torques Boxes section ends -->
-
-        <!-- Seesaw  section -->
-        <div class="seesaw-box">
-            <!-- Tahterevalli Tahtası -->
-            <div id="seesaw-plank" class="seesaw-plank">
-                <!-- soldaki ağırlık alanı -->
-                <div id="left-weights" class="weights-area"></div>
-                <!-- Merkezdeki nokta -->
-                <div class="pivot-marker"></div>
-                <!-- sağdaki ağırlık alanı  -->
-                <div id="right-weights" class="weights-area"></div>
+            <div id="weightLog" class="weight-log">
+                <p class="log-empty">Click on the plank to add weights...</p>
             </div>
 
-            <!-- Pivot Noktası (Dayanak) -->
-            <div id="support" class="support"></div>
-        </div>
-        <!-- Seesaw section ends -->
+            <!-- reset butonu - test edildi calisiyor -->
+            <button id="resetBtn" class="btn btn-reset">Reset</button>
+        </aside>
 
-        <!-- floor section -->
-        <div class="floor"></div>
-        <!-- floor section ends -->
+        <!-- sag taraf - ana icerik -->
+        <main class="main-content">
+            <header>
+                <h1>Seesaw Simulation</h1>
+            </header>
 
-        <!-- dashboard section -->
-        <div class="controls">
-            <div class="control-buttons">
-                <button id="add-left-weight-btn" class="btn btn-left">Add Left</button>
+            <!-- torque degerleri -->
+            <div class="torques-box">
+                <div class="torque-item">
+                    <span class="torque-label">Left Total Weight</span>
+                    <span id="leftTorque" class="torque-value">0 KG</span>
+                </div>
+                <div class="torque-item">
+                    <span class="torque-label">Right Total Weight</span>
+                    <span id="rightTorque" class="torque-value">0 KG</span>
+                </div>
             </div>
-            <div class="control-group">
-                <label for="weight-input">Weight (kg):</label>
-                <input type="number" id="weight-input" min="1" max="100" value="10">
 
+            <div class="info-row">
+                <div class="angle-box">
+                    <span>angle: </span>
+                    <span id="angle">0°</span>
+                </div>
+                <div class="next-weight-box">
+                    <span>Next Weight: </span>
+                    <span id="nextWeight">? kg</span>
+                </div>
             </div>
-            <div class="control-buttons">
-                <button id="add-right-weight-btn" class="btn btn-right">Add Right </button>
-            </div>
-        </div>
-        <button id="reset-btn" class="btn btn-reset">🔄 Reset prank</button>
 
-        <!-- dashboard section ends -->
+            <!-- seesaw alani -->
+            <div class="seesaw-box">
+                <div id="plank" class="seesaw-plank">
+                    <!-- sol taraf agirliklar -->
+                    <div id="leftWeights" class="weights-area left"></div>
+                    <!-- pivot noktasi -->
+                    <div class="pivot-marker"></div>
+                    <!-- sag taraf agirliklar -->
+                    <div id="rightWeights" class="weights-area right"></div>
+                </div>
+                <!-- destek -->
+                <div id="support" class="support"></div>
+            </div>
+        </main>
     </div>
 
     <script src="app.js"></script>
