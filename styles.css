@@ -1,0 +1,326 @@
+:root {
+    --bg-primary: #0f0f23;
+    --bg-secondary: #1a1a2e;
+    --bg-tertiary: #16213e;
+    --accent-primary: #e94560;
+    --accent-secondary: #0f3460;
+    --accent-teal: #2ec4b6;
+    --text-primary: #eaeaea;
+    --text-secondary: #a0a0a0;
+    --plank-color: #8b5a2b;
+    --plank-dark: #5c3d1e;
+    --support-color: #4a4a4a;
+    --shadow-color: rgba(0, 0, 0, 0.4);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* https://grabient.com/HQDgDAbANMDsCsBGGsLWAZgJyxtsesIMiYGJ8xwiE8UALMAEz1YPPbtO1QGLBhBUfoIIBaMAPgYgA */
+    background: linear-gradient(90deg, #efe6da 0.000%, #e5d7ca 16.667%, #dac7b9 33.333%, #cfb6a9 50.000%, #c4a699 66.667%, #b9968b 83.333%, #af887e 100.000%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-primary);
+    overflow: hidden;
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Torques Boxes section */
+.torques-box {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 800px;
+    gap: 15px;
+}
+
+.torque-item {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    border-color: rgba(168, 168, 168, 0.6);
+    border-width: 1px;
+    border-style: solid;
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+.torque-label {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--bg-tertiary);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+
+
+.angle-box {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px 25px;
+    border-radius: 12px;
+    border: 1px solid rgba(168, 168, 168, 0.6);
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+#angle-value {
+    color: var(--accent-primary);
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+}
+
+/* Tahterevalli Container */
+.seesaw-box {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+
+/* Seesaw section */
+.seesaw-plank {
+    position: absolute;
+    bottom: 80px;
+    width: 600px;
+    height: 20px;
+    background: linear-gradient(180deg, var(--plank-color) 0%, var(--plank-dark) 100%);
+    border-radius: 10px;
+    transform-origin: center center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow:
+        0 4px 8px var(--shadow-color),
+        inset 0 2px 4px rgba(255, 255, 255, 0.1);
+    z-index: 10;
+}
+
+/* circle on the  plank */
+.pivot-marker {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    background: var(--support-color);
+    border-radius: 50%;
+    border: 3px solid var(--plank-dark);
+    z-index: 5;
+}
+
+/* weights area section */
+.weights-area {
+    position: absolute;
+    top: -60px;
+    height: 60px;
+    width: 45%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 5px;
+}
+
+
+/* Pivot Noktası (support / Dayanak) */
+.support {
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-left: 40px solid transparent;
+    border-right: 40px solid transparent;
+    border-bottom: 80px solid var(--support-color);
+    z-index: 5;
+}
+
+
+/* floor */
+.floor {
+    width: 100%;
+    height: 20px;
+    background: var(--bg-primary);
+    border-radius: 5px;
+    box-shadow: 0 -2px 10px rgba(45, 90, 39, 0.5);
+    margin-top: -20px;
+}
+
+/* dashboard section */
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 20px 30px;
+    border-radius: 15px;
+    border: 1px solid rgba(168, 168, 168, 0.6);
+    box-shadow: 0 4px 20px var(--shadow-color);
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.control-group label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--bg-tertiary);
+}
+
+.control-group input {
+    width: 70px;
+    padding: 4px 12px;
+    border: 2px solid var(--accent-secondary);
+    border-radius: 8px;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    font-size: 0.99rem;
+    text-align: center;
+    outline: none;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* buttons */
+.btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.btn-left {
+    background: linear-gradient(145deg, var(--text-secondary), #1a9e8f);
+    color: var(--bg-primary);
+}
+
+.btn-left:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(46, 196, 182, 0.4);
+}
+
+.btn-right {
+    background: linear-gradient(145deg, var(--text-primary), #c73e54);
+    color: var(--bg-primary);
+}
+
+.btn-right:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+}
+
+.btn-reset {
+    background: var(--bg-tertiary);
+    width: 100%;
+    color: var(--text-secondary);
+    border: 2px solid var(--accent-secondary);
+}
+
+.btn-reset:hover {
+    background: var(--accent-secondary);
+    color: var(--text-primary);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Responsive Tasarım */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .header h1 {
+        font-size: 1.6rem;
+    }
+
+    .seesaw-plank {
+        width: 90vw;
+        max-width: 500px;
+    }
+
+    .torques-box {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .torque-item {
+        padding: 10px;
+    }
+
+    .torque-value {
+        font-size: 1.4rem;
+    }
+
+    .controls {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    .support {
+        border-left-width: 30px;
+        border-right-width: 30px;
+        border-bottom-width: 60px;
+    }
+
+    .support::before {
+        top: -65px;
+    }
+
+    .seesaw-plank {
+        bottom: 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.3rem;
+    }
+
+    .control-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}

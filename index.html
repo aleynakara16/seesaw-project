@@ -1,3 +1,82 @@
-<html>
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seesaw Simulation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- header section -->
+        <header>
+            <h1>🎢 Seesaw Simulation</h1>
+        </header>
+
+        <!-- Torques Boxes section -->
+        <div class="torques-box">
+            <div class="torque-item">
+                <span class="torque-label">Left Total Weight</span>
+                <span id="left-torque" class="torque-value">110 KG</span>
+            </div>
+            <div class="torque-item">
+                <span class="torque-label">Next Weight</span>
+                <span id="net-torque" class="torque-value">10 KG</span>
+            </div>
+            <div class="torque-item">
+                <span class="torque-label">Right Total Weight</span>
+                <span id="right-torque" class="torque-value">90 KG</span>
+            </div>
+        </div>
+        <div class="angle-box">
+            <span>Angle: </span>
+            <span id="angle-value">0°</span>
+        </div>
+        <!-- Torques Boxes section ends -->
+
+        <!-- Seesaw  section -->
+        <div class="seesaw-box">
+            <!-- Tahterevalli Tahtası -->
+            <div id="seesaw-plank" class="seesaw-plank">
+                <!-- soldaki ağırlık alanı -->
+                <div id="left-weights" class="weights-area"></div>
+                <!-- Merkezdeki nokta -->
+                <div class="pivot-marker"></div>
+                <!-- sağdaki ağırlık alanı  -->
+                <div id="right-weights" class="weights-area"></div>
+            </div>
+
+            <!-- Pivot Noktası (Dayanak) -->
+            <div id="support" class="support"></div>
+        </div>
+        <!-- Seesaw section ends -->
+
+        <!-- floor section -->
+        <div class="floor"></div>
+        <!-- floor section ends -->
+
+        <!-- dashboard section -->
+        <div class="controls">
+            <div class="control-buttons">
+                <button id="add-left-weight-btn" class="btn btn-left">Add Left</button>
+            </div>
+            <div class="control-group">
+                <label for="weight-input">Weight (kg):</label>
+                <input type="number" id="weight-input" min="1" max="100" value="10">
+
+            </div>
+            <div class="control-buttons">
+                <button id="add-right-weight-btn" class="btn btn-right">Add Right </button>
+            </div>
+        </div>
+        <button id="reset-btn" class="btn btn-reset">🔄 Reset prank</button>
+
+        <!-- dashboard section ends -->
+    </div>
+
+    <script src="app.js"></script>
+</body>
 
 </html>
