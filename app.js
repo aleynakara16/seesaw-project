@@ -116,6 +116,7 @@ function addWeightAtPosition(clickX) {
     saveState();
     updatePhysics();
     renderWeights();
+    addLogEntry(weight);
     generateNextWeight();
 
     console.log(`Mass:${mass}kg. Side:${side}. Distance: ${distance.toFixed(0)}px`);
@@ -129,6 +130,7 @@ function removeWeight(weightId) {
         saveState();
         updatePhysics();
         renderWeights();
+        removeLogEntry(weightId);
         return removed;
     }
     return null;
@@ -229,31 +231,55 @@ function updateUiValues() {
 
     DOM.leftWeightBar.style.width = `${leftPercentage}%`;
     DOM.rightWeightBar.style.width = `${rightPercentage}%`;
-
-    updateWeightLog();// soldaki panel güncellendi
 }
 
-/*soldaki paneli güncelleme*/
-function updateWeightLog() {
+/*Log elementi oluşturma*/
+function createLogElement(weight) {
+    const logItem = document.createElement('div');
+    logItem.className = `log-item ${weight.side}`;
+    logItem.dataset.id = weight.id;
+
+    const sideText = weight.side === 'left' ? 'LEFT' : 'RIGHT';
+    const massSpan = document.createElement('span');
+    massSpan.className = 'mass';
+    massSpan.textContent = `${weight.mass} kg | ${sideText}  | ${weight.distance.toFixed(0)}px from Center`;
+
+    logItem.appendChild(massSpan);
+    return logItem;
+}
+
+function addLogEntry(weight) {
+    if (DOM.weightLog.querySelector('.log-empty')) DOM.weightLog.querySelector('.log-empty').remove();
+
+    const logItem = createLogElement(weight);
+    DOM.weightLog.insertBefore(logItem, DOM.weightLog.firstChild);// En uste ekleme
+
+}
+
+function removeLogEntry(weightId) {
+    const logItem = DOM.weightLog.querySelector(`[data-id="${weightId}"]`);
+    if (logItem) logItem.remove();
+
+    // Hiç log kalmadıysa boş mesaj göster
+    if (DOM.weightLog.children.length === 0) {
+        DOM.weightLog.innerHTML = '<p class="log-empty">You haven not added weight yet</p>';
+    }
+}
+
+/*İlk yükleme için tüm logları render etme*/
+function renderAllLogs() {
     const weights = seesawState.weights;
     if (weights.length === 0) {
         DOM.weightLog.innerHTML = '<p class="log-empty">You haven not added weight yet</p>';
         return;
     }
-    const logHTML = weights
-        .slice()
-        .reverse()
-        .map(weight => {
-            const sideText = weight.side === 'left' ? 'LEFT' : 'RIGHT';
-            return `
-                <div class="log-item ${weight.side}">
-                    <span class="mass">${weight.mass} kg | ${sideText}  | ${weight.distance.toFixed(0)}px from Center</span>
-                </div>
-            `;
-        })
-        .join('');
 
-    DOM.weightLog.innerHTML = logHTML;
+    DOM.weightLog.innerHTML = '';
+    // Ters sırada ekle (en yeni en üstte)
+    for (let i = weights.length - 1; i >= 0; i--) {
+        const logItem = createLogElement(weights[i]);
+        DOM.weightLog.appendChild(logItem);
+    }
 }
 
 /*Plank'ın rotasyonunu güncelleme*/
@@ -322,7 +348,7 @@ function bindEvents() {
         resetState();
         renderWeights();
         updatePhysics();
-        updateWeightLog();
+        renderAllLogs();
     });
 }
 
@@ -335,7 +361,7 @@ function init() {
     generateNextWeight();
     renderWeights();
     updatePhysics();
-    updateWeightLog();
+    renderAllLogs();
 }
 
 document.addEventListener('DOMContentLoaded', init);

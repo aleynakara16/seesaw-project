@@ -502,7 +502,13 @@ header h1 {
         height: auto;
         max-height: 400px;
         border-right: none;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        border-bottom: none;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        order: 2;
+    }
+
+    .main-content {
+        order: 1;
     }
 
     .sidebar .weight-log {
@@ -524,7 +530,7 @@ header h1 {
     }
 
     .info-row {
-        flex-direction: column;
+        flex-direction: row;
         gap: 10px;
     }
 }
