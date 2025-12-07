@@ -43,7 +43,12 @@ function updateNextWeightBox() {
 
 function saveState() {
     try {
-        const stateJSON = JSON.stringify(seesawState);
+        // nextWeight localStorage'e kaydetmiyoruz
+        const stateToSave = {
+            weights: seesawState.weights,
+            currentAngle: seesawState.currentAngle
+        };
+        const stateJSON = JSON.stringify(stateToSave);
         localStorage.setItem(CONSTANTS.STORAGE_KEY, stateJSON);
     } catch (error) {
         console.error('❌ Error saving state:', error);
@@ -140,23 +145,57 @@ function renderWeights() {
     });
 }
 
+/* Ağırlık değerine göre boyut hesaplama (1-10 arası) */
+function getWeightSize(mass) {
+    const MIN_SIZE = 30;
+    const MAX_SIZE = 65;
+    const boxSizeRange = MAX_SIZE - MIN_SIZE;
+    const weightRange = CONSTANTS.MAX_WEIGHT - CONSTANTS.MIN_WEIGHT;
+
+    // agirlik boyutunu hesaplıyoruz
+    const size = MIN_SIZE + ((mass - CONSTANTS.MIN_WEIGHT) / weightRange) * boxSizeRange;
+    return Math.round(size);
+}
+function getWeightColor(mass) {
+    const colorPalette = {
+        1: '#B3D9E6',
+        2: '#A8D5A8',
+        3: '#FFD699',
+        4: '#CCB3FF',
+        5: '#FFB3D1',
+        6: '#FFCC99',
+        7: '#B3D1FF',
+        8: '#99FF99',
+        9: '#FF9999',
+        10: '#B366FF'
+    };
+    return colorPalette[mass] || colorPalette[5];
+}
+
 /* agirlik DOM elementi olusturma*/
 function createWeightElement(weight) {
     const wrapper = document.createElement('div');
     wrapper.className = 'weight';
     wrapper.dataset.id = weight.id;
     wrapper.dataset.side = weight.side;
+    wrapper.dataset.mass = weight.mass;
 
-    // Pozisyonu ayarlama(tıklanan yerde görün)
+    const size = getWeightSize(weight.mass);
+    const color = getWeightColor(weight.mass);
     wrapper.style.position = 'absolute';
     wrapper.style.left = `${weight.clickX}px`;
-    wrapper.style.top = '-39px';
+    wrapper.style.top = `${-size - 5}px`; // Ağırlık boyutuna göre dinamik
     wrapper.style.transform = 'translateX(-50%)';
 
-    // Ağırlık kutusu
+    // agirlikler icin dinamik boyut,renk,font
     const box = document.createElement('div');
     box.className = 'weight-box';
     box.textContent = weight.mass;
+    box.style.width = `${size}px`;
+    box.style.height = `${size}px`;
+    box.style.background = color;
+    const fontSize = Math.max(0.6, Math.min(1.0, 0.6 + (weight.mass - 1) * 0.04));
+    box.style.fontSize = `${fontSize}rem`;
 
     // Silme butonu
     const deleteBtn = document.createElement('button');

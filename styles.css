@@ -188,7 +188,7 @@ header h1 {
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    margin-top: 20px;
+    margin-top: 60px;
     margin-bottom: 0;
 }
 
@@ -276,20 +276,19 @@ header h1 {
 }
 
 .weight-box {
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(145deg, var(--accent-primary), var(--plank-dark));
+    min-width: 30px;
+    min-height: 30px;
     border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 0.75rem;
     font-weight: 700;
     box-shadow:
         0 3px 6px rgba(0, 0, 0, 0.2),
         inset 0 1px 2px rgba(255, 255, 255, 0.2);
     position: relative;
+    transition: transform 0.2s ease;
 }
 
 .weight-box::after {
