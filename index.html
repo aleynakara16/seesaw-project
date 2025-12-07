@@ -29,15 +29,15 @@
                 <h1>Seesaw Simulation</h1>
             </header>
 
-            <!-- torque degerleri -->
+            <!-- weight degerleri -->
             <div class="torques-box">
                 <div class="torque-item">
                     <span class="torque-label">Left Total Weight</span>
-                    <span id="leftTorque" class="torque-value">0 KG</span>
+                    <span id="leftWeight" class="torque-value">0 KG</span>
                 </div>
                 <div class="torque-item">
                     <span class="torque-label">Right Total Weight</span>
-                    <span id="rightTorque" class="torque-value">0 KG</span>
+                    <span id="rightWeight" class="torque-value">0 KG</span>
                 </div>
             </div>
 
@@ -54,13 +54,11 @@
 
             <!-- seesaw alani -->
             <div class="seesaw-box">
-                <div id="plank" class="seesaw-plank">
-                    <!-- sol taraf agirliklar -->
-                    <div id="leftWeights" class="weights-area left"></div>
-                    <!-- pivot noktasi -->
-                    <div class="pivot-marker"></div>
-                    <!-- sag taraf agirliklar -->
-                    <div id="rightWeights" class="weights-area right"></div>
+                <div id="plank-container" class="plank-container">
+                    <div id="plank" class="seesaw-plank">
+                        <!-- pivot noktasi -->
+                        <div class="pivot-marker"></div>
+                    </div>
                 </div>
                 <!-- destek -->
                 <div id="support" class="support"></div>
