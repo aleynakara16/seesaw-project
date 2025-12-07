@@ -9,6 +9,8 @@ const CONSTANTS = {
 const DOM = {
     leftWeight: document.getElementById('leftWeight'),
     rightWeight: document.getElementById('rightWeight'),
+    leftWeightBar: document.getElementById('leftWeightBar'),
+    rightWeightBar: document.getElementById('rightWeightBar'),
     angleValue: document.getElementById('angle'),
     nextWeightValue: document.getElementById('nextWeight'),
     seesawPlank: document.getElementById('plank'),
@@ -219,6 +221,15 @@ function updateUiValues() {
     DOM.leftWeight.textContent = `${leftWeight} KG`;
     DOM.rightWeight.textContent = `${rightWeight} KG`;
     DOM.angleValue.textContent = `${seesawState.currentAngle.toFixed(1)}°`;
+
+    // Ağırlık göstergelerini güncelle
+    const MAX_WEIGHT_DISPLAY = 100; // Gösterge için maksimum değer
+    const leftPercentage = Math.min((leftWeight / MAX_WEIGHT_DISPLAY) * 100, 100);
+    const rightPercentage = Math.min((rightWeight / MAX_WEIGHT_DISPLAY) * 100, 100);
+
+    DOM.leftWeightBar.style.width = `${leftPercentage}%`;
+    DOM.rightWeightBar.style.width = `${rightPercentage}%`;
+
     updateWeightLog();// soldaki panel güncellendi
 }
 
@@ -226,7 +237,7 @@ function updateUiValues() {
 function updateWeightLog() {
     const weights = seesawState.weights;
     if (weights.length === 0) {
-        DOM.weightLog.innerHTML = '<p class="log-empty">Henüz agirlik eklenmedi</p>';
+        DOM.weightLog.innerHTML = '<p class="log-empty">You haven not added weight yet</p>';
         return;
     }
     const logHTML = weights
