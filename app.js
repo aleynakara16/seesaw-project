@@ -21,28 +21,26 @@ const DOM = {
 let seesawState = {
     weights: [],
     currentAngle: 0,
+    nextWeight: null,
 };
 let cursorIndicator = null;
 
-
+/*---------------------------------------------------YARDIMCI METOTLAR---------------------------------------------------*/
 function generateId() {
     return 'w_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
 }
-/* 1-10 arasinda mass degeri uretme*/
 function getRandomWeight() {
     return Math.floor(Math.random() * (CONSTANTS.MAX_WEIGHT - CONSTANTS.MIN_WEIGHT + 1)) + CONSTANTS.MIN_WEIGHT;
 }
-/* Bir sonraki mass degerini belirliyoruz */
 function generateNextWeight() {
     seesawState.nextWeight = getRandomWeight();
     updateNextWeightBox();
 }
-/* mass degerini UI'da gosteriyoruz */
 function updateNextWeightBox() {
     DOM.nextWeightValue.textContent = `${seesawState.nextWeight} kg`;
 }
 
-
+/*---------------------------------------------------STATE YONETIMI---------------------------------------------------*/
 function saveState() {
     try {
         // nextWeight localStorage'e kaydetmiyoruz
@@ -76,7 +74,7 @@ function resetState() {
     saveState();
 }
 
-
+/*---------------------------------------------------FİZİKSEL HESAPLAMALAR---------------------------------------------------*/
 /*Bir taraftaki toplam tork= Σ(weight ×distance)*/
 function getSideTorque(side) {
     return seesawState.weights
@@ -97,8 +95,7 @@ function getTotalSideMass(side) {
         .reduce((total, weight) => total + weight.mass, 0);
 }
 
-
-/*Tıklanan pozisyona agirlik ekleme*/
+/*---------------------------------------------------AGIRLIK YONETIMI---------------------------------------------------*/
 function addWeightAtPosition(clickX) {
     const side = clickX < CONSTANTS.PLANK_CENTER ? 'left' : 'right'; // Sol mu sag mi?
     const distance = Math.abs(clickX - CONSTANTS.PLANK_CENTER);  // Merkeze uzaklik (px)
@@ -110,7 +107,7 @@ function addWeightAtPosition(clickX) {
         mass: mass,
         side: side,
         distance: distance,
-        clickX: clickX // gorsel pozisyon icin
+        clickX: clickX
     };
     seesawState.weights.push(weight);
     saveState();
@@ -127,6 +124,7 @@ function removeWeight(weightId) {
     const index = seesawState.weights.findIndex(w => w.id === weightId);
     if (index !== -1) {
         const removed = seesawState.weights.splice(index, 1)[0];
+        console.log(`Removed weight: ${removed.mass}kg`);
         saveState();
         updatePhysics();
         renderWeights();
@@ -135,7 +133,6 @@ function removeWeight(weightId) {
     }
     return null;
 }
-
 /*agirlikları DOM'a render etme*/
 function renderWeights() {
     // Plank icindeki agirlikları temizleme(pivot-marker hariç)
@@ -216,7 +213,7 @@ function createWeightElement(weight) {
     return wrapper;
 }
 
-/*UI değerlerini günceller (tork ve açı gösterimi)*/
+/*UI GÜNCELLEME*/
 function updateUiValues() {
     const leftWeight = getTotalSideMass('left');
     const rightWeight = getTotalSideMass('right');
@@ -233,7 +230,7 @@ function updateUiValues() {
     DOM.rightWeightBar.style.width = `${rightPercentage}%`;
 }
 
-/*Log elementi oluşturma*/
+/*---------------------------------------------------LOG YONETIMI---------------------------------------------------*/
 function createLogElement(weight) {
     const logItem = document.createElement('div');
     logItem.className = `log-item ${weight.side}`;
@@ -247,7 +244,6 @@ function createLogElement(weight) {
     logItem.appendChild(massSpan);
     return logItem;
 }
-
 function addLogEntry(weight) {
     if (DOM.weightLog.querySelector('.log-empty')) DOM.weightLog.querySelector('.log-empty').remove();
 
@@ -255,7 +251,6 @@ function addLogEntry(weight) {
     DOM.weightLog.insertBefore(logItem, DOM.weightLog.firstChild);// En uste ekleme
 
 }
-
 function removeLogEntry(weightId) {
     const logItem = DOM.weightLog.querySelector(`[data-id="${weightId}"]`);
     if (logItem) logItem.remove();
@@ -265,7 +260,6 @@ function removeLogEntry(weightId) {
         DOM.weightLog.innerHTML = '<p class="log-empty">You haven not added weight yet</p>';
     }
 }
-
 /*İlk yükleme için tüm logları render etme*/
 function renderAllLogs() {
     const weights = seesawState.weights;
@@ -282,23 +276,19 @@ function renderAllLogs() {
     }
 }
 
-/*Plank'ın rotasyonunu güncelleme*/
+
+/*---------------------------------------------------EVENT HANDLERS---------------------------------------------------*/
 function updatePlankRotation() {
     DOM.seesawPlank.style.transform = `rotate(${seesawState.currentAngle}deg)`;
 }
-
 /*Fizik hesaplarini yapar ve UI'i gunceller*/
 function updatePhysics() {
     const leftTorque = getSideTorque('left');
     const rightTorque = getSideTorque('right');
     seesawState.currentAngle = calculateAngle(rightTorque, leftTorque);//task'daki formul ile
-
     updateUiValues();
     updatePlankRotation();
 }
-
-
-
 /*Plank tiklanma olayi*/
 function handleContainerClick(e) {
     // Eger silme butonuna tiklandiyse, agirlik ekleme
@@ -319,7 +309,7 @@ function handleContainerClick(e) {
 function createCursorIndicator() {
     cursorIndicator = document.createElement('div');
     cursorIndicator.className = 'vertical-line';
-    cursorIndicator.style.transform = 'translateX(-50%)'; // Ortalamak için
+    cursorIndicator.style.transform = 'translateX(-50%)'; // okun imleç ile aynı hizada olması
     DOM.plankContainer.appendChild(cursorIndicator);
 }
 /*Cursor indicator pozisyonunu guncelleme*/
@@ -332,7 +322,7 @@ function updateCursorIndicator(e) {
     // container sinir kontrolu
     if (mouseX >= 0 && mouseX <= CONSTANTS.PLANK_WIDTH) {
         cursorIndicator.style.opacity = '1';
-        cursorIndicator.style.left = `${mouseX}px`;
+        cursorIndicator.style.left = `${mouseX}px`;// cursor fareye göre konumlanır
     } else {
         cursorIndicator.style.opacity = '0';
     }
@@ -351,8 +341,6 @@ function bindEvents() {
         renderAllLogs();
     });
 }
-
-
 
 function init() {
     loadState();
